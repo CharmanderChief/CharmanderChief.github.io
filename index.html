@@ -1,6 +1,8 @@
+<!DOCTYPE html>
 <html>
 <head>
   <title>Pocket Master List</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,79 +12,113 @@
       padding: 20px;
     }
 
-  h1 {
-    text-align: center;
-    margin-bottom: 25px;
-    font-size: 32px;
-    color: #ffcb05; /* Pokémon yellow */
-  }
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 32px;
+      color: #ffcb05;
+    }
 
-  .search-box {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto 25px auto;
-    display: flex;
-    justify-content: center;
-  }
+    .search-box {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto 25px auto;
+      display: flex;
+      justify-content: center;
+    }
 
-  .search-box input {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    background: #1e1e1e;
-    color: #ffffff;
-  }
+    .search-box input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+      background: #1e1e1e;
+      color: #ffffff;
+    }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #1a1a1a;
-    border-radius: 8px;
-    overflow: hidden;
-  }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: #1a1a1a;
+      border-radius: 8px;
+      overflow: hidden;
+    }
 
-  th, td {
-    padding: 14px;
-    text-align: left;
-  }
+    th, td {
+      padding: 14px;
+      text-align: left;
+    }
 
-  th {
-    background-color: #2c2c2c;
-    color: #ffcb05;
-    font-size: 18px;
-    border-bottom: 2px solid #3c3c3c;
-  }
+    th {
+      background-color: #2c2c2c;
+      color: #ffcb05;
+      font-size: 18px;
+      border-bottom: 2px solid #3c3c3c;
+      cursor: pointer;
+    }
 
-  tr:nth-child(even) {
-    background-color: #141414;
-  }
+    tr:nth-child(even) {
+      background-color: #141414;
+    }
 
-  tr:hover {
-    background-color: #222222;
-  }
-</style>
+    tr:hover {
+      background-color: #222222;
+    }
+  </style>
 
-<script>
-  function searchTable() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const rows = document.querySelectorAll("#pokemonTable tr");
+  <script>
+    function searchTable() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const rows = document.querySelectorAll("#pokemonTable tr");
 
-    rows.forEach(row => {
-      const handle = row.querySelector("td:nth-child(1)");
-      const pokemon = row.querySelector("td:nth-child(2)");
+      rows.forEach(row => {
+        const handle = row.querySelector("td:nth-child(1)");
+        const pokemon = row.querySelector("td:nth-child(2)");
 
-      if (!handle || !pokemon) return;
+        if (!handle || !pokemon) return;
 
-      const match =
-        handle.textContent.toLowerCase().includes(input) ||
-        pokemon.textContent.toLowerCase().includes(input);
+        const match =
+          handle.textContent.toLowerCase().includes(input) ||
+          pokemon.textContent.toLowerCase().includes(input);
 
-      row.style.display = match ? "" : "none";
-    });
-  }
+        row.style.display = match ? "" : "none";
+      });
+    }
+
+    let sortAsc = true;
+
+    function sortByPokemon() {
+      const tbody = document.getElementById("pokemonTable");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+
+      rows.sort((a, b) => {
+        const aText = a.children[1].textContent
+          .split("/")[0]
+          .trim()
+          .toLowerCase();
+        const bText = b.children[1].textContent
+          .split("/")[0]
+          .trim()
+          .toLowerCase();
+
+        if (aText === "") return 1;
+        if (bText === "") return -1;
+
+        return sortAsc
+          ? aText.localeCompare(bText)
+          : bText.localeCompare(aText);
+      });
+
+      rows.forEach(row => tbody.appendChild(row));
+      sortAsc = !sortAsc;
+    }
+
+    window.onload = () => {
+      sortAsc = true;
+      sortByPokemon();
+    };
   </script>
 </head>
 
@@ -98,6 +134,14 @@
     placeholder="Search Twitter handle or Pokémon..."
   >
 </div>
+
+<table>
+  <thead>
+    <tr>
+      <th>Twitter Handle</th>
+      <th onclick="sortByPokemon()">Pokémon Name 🔽</th>
+    </tr>
+  </thead>
 
 <table>
   <thead>
@@ -141,7 +185,7 @@
     
     <tr>
       <td>@hotocrypto</td>
-      <td>Tentacool /</td>
+      <td>Tentacool 56/62</td>
     </tr>
     
     <tr>
@@ -181,7 +225,7 @@
     
     <tr>
       <td>@CubanRambo</td>
-      <td>Typhlosion /</td>
+      <td>Typhlosion 34/182</td>
     </tr>
     
     <tr>
@@ -501,7 +545,7 @@
         
     <tr>
       <td>@Oma_Knight_</td>
-      <td>Omanyte /</td>
+      <td>Omanyte 52/62</td>
     </tr>
         
     <tr>
@@ -541,13 +585,69 @@
         
     <tr>
       <td>@Diglett_Dude</td>
-      <td>Diglett /</td>
+      <td>Diglett 47/102</td>
     </tr>
         
     <tr>
       <td>@TheBrandonBaron</td>
       <td>Trainer Brandon /</td>
     </tr>
+            
+    <tr>
+      <td>@GatoGodMode</td>
+      <td>Dark Persian 42/82</td>
+    </tr>
+                
+    <tr>
+      <td>@Bellsprout85</td>
+      <td>Bellsprout /</td>
+    </tr>
+                
+    <tr>
+      <td>@OnlySprouts</td>
+      <td>Bellsprout /</td>
+    </tr>
+                
+    <tr>
+      <td>@MaChampCoin</td>
+      <td>Machamp /</td>
+    </tr>
+                
+    <tr>
+      <td>@JigglypuffKing_</td>
+      <td>Jigglypuff /</td>
+    </tr>
+                
+    <tr>
+      <td>@MachopKing</td>
+      <td>Machop /</td>
+    </tr>
+                
+    <tr>
+      <td>@</td>
+      <td> /</td>
+    </tr>
+                
+    <tr>
+      <td>@</td>
+      <td> /</td>
+    </tr>
+                
+    <tr>
+      <td>@</td>
+      <td> /</td>
+    </tr>
+                
+    <tr>
+      <td>@</td>
+      <td> /</td>
+    </tr>
+                
+    <tr>
+      <td>@</td>
+      <td> /</td>
+    </tr>
+    
     
 
 
