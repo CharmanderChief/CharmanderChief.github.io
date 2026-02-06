@@ -74,14 +74,14 @@
       const rows = document.querySelectorAll("#pokemonTable tr");
 
       rows.forEach(row => {
-        const handle = row.querySelector("td:nth-child(1)");
-        const pokemon = row.querySelector("td:nth-child(2)");
-
-        if (!handle || !pokemon) return;
+        const handle = row.children[0]?.textContent.toLowerCase() || "";
+        const pokemon = row.children[1]?.textContent.toLowerCase() || "";
+        const set = row.children[2]?.textContent.toLowerCase() || "";
 
         const match =
-          handle.textContent.toLowerCase().includes(input) ||
-          pokemon.textContent.toLowerCase().includes(input);
+          handle.includes(input) ||
+          pokemon.includes(input) ||
+          set.includes(input);
 
         row.style.display = match ? "" : "none";
       });
@@ -94,14 +94,15 @@
       const rows = Array.from(tbody.querySelectorAll("tr"));
 
       rows.sort((a, b) => {
-        const aText = a.children[1].textContent
+        const aText = a.children[1]?.textContent
           .split("/")[0]
           .trim()
-          .toLowerCase();
-        const bText = b.children[1].textContent
+          .toLowerCase() || "";
+
+        const bText = b.children[1]?.textContent
           .split("/")[0]
           .trim()
-          .toLowerCase();
+          .toLowerCase() || "";
 
         if (aText === "") return 1;
         if (bText === "") return -1;
@@ -131,7 +132,7 @@
     type="text"
     id="searchInput"
     onkeyup="searchTable()"
-    placeholder="Search Twitter handle or Pokémon..."
+    placeholder="Search handle, Pokémon, or set..."
   >
 </div>
 
@@ -140,14 +141,7 @@
     <tr>
       <th>Twitter Handle</th>
       <th onclick="sortByPokemon()">Pokémon Name 🔽</th>
-    </tr>
-  </thead>
-
-<table>
-  <thead>
-    <tr>
-      <th>Twitter Handle</th>
-      <th>Pokémon Name</th>
+      <th>Set</th>
     </tr>
   </thead>
 
@@ -623,31 +617,8 @@
       <td>Machop /</td>
     </tr>
                 
-    <tr>
-      <td>@</td>
-      <td> /</td>
-    </tr>
-                
-    <tr>
-      <td>@</td>
-      <td> /</td>
-    </tr>
-                
-    <tr>
-      <td>@</td>
-      <td> /</td>
-    </tr>
-                
-    <tr>
-      <td>@</td>
-      <td> /</td>
-    </tr>
-                
-    <tr>
-      <td>@</td>
-      <td> /</td>
-    </tr>
-    
+ 
+   
     
 
 
